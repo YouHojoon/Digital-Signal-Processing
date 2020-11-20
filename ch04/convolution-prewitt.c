@@ -10,9 +10,9 @@ int main(void) {
 	FILE* fp;
 	int imgSize;
 	int margin = MASK_SIZE / 2;
-	int mask1[MASK_SIZE][MASK_SIZE] = {-1,-1,-1,0,0,0,1,1,1};
+	int mask1[MASK_SIZE][MASK_SIZE] = { -1,-1,-1,0,0,0,1,1,1 };
 	int mask2[MASK_SIZE][MASK_SIZE] = { -1,0,1,-1,0,1,-1,0,1 };
-	double sum = 0.0;
+	double sum1 = 0.0, sum2 = 0.0;
 
 	fp = fopen("lenna.bmp", "rb");
 	if (fp == NULL) {
@@ -36,28 +36,20 @@ int main(void) {
 		for (int j = margin; j < hinfo.biWidth - margin; j++) {
 			for (int m = -margin; m <= margin; m++) {
 				for (int n = -margin; n <= margin; n++) {
-					sum += image[(i + m) * hinfo.biWidth + (j + n)] * mask1[margin+m][margin+n];
+					sum1 += image[(i + m) * hinfo.biWidth + (j + n)] * mask1[margin + m][margin + n];
+					sum2 += image[(i + m) * hinfo.biWidth + (j + n)] * mask2[margin + m][margin + n];
 				}
 			}
-			output1[i*hinfo.biWidth+j] = (BYTE)(abs(sum) / 3.0);
-			sum = 0.0;
-		}
-	}
-	
-	for (int i = margin; i < hinfo.biHeight - margin; i++) {
-		for (int j = margin; j < hinfo.biWidth - margin; j++) {
-			for (int m = -margin; m <= margin; m++) {
-				for (int n = -margin; n <= margin; n++) {
-					sum += image[(i + m) * hinfo.biWidth + (j + n)] * mask2[margin + m][margin + n];
-				}
-			}
-			output2[i * hinfo.biWidth + j] = (BYTE)(abs(sum) / 3.0);
-			sum = 0.0;
+			output1[i * hinfo.biWidth + j] = (BYTE)(abs(sum1) / 3.0);
+			output2[i * hinfo.biWidth + j] = (BYTE)(abs(sum2) / 3.0);
+			sum1 = 0.0;
+			sum2 = 0.0;
 		}
 	}
 
+
 	for (int i = 0; i < imgSize; i++) {
-		if (output1[i] > 30||output2[i]>30)result[i] = 255;
+		if (output1[i] > 30 || output2[i] > 30)result[i] = 255;
 		else result[i] = 0;
 	}
 	fp = fopen("output.bmp", "wb");

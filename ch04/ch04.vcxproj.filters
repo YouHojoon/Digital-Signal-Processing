@@ -18,7 +18,7 @@
     <ClCompile Include="convolution-prewitt-x.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="convolution-prewitt-y.c">
+    <ClCompile Include="convolution-prewitt.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -140,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="convolution-prewitt-x.c" />
-    <ClCompile Include="convolution-prewitt-y.c" />
+    <ClCompile Include="convolution-prewitt.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
