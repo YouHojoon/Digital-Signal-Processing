@@ -39,4 +39,5 @@ int main(void) {
 	free(image);
 	free(output);
 
+	return 0;
 }

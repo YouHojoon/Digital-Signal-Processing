@@ -58,4 +58,6 @@
 //	free(image);
 //	free(output);
 
+//  return 0;
+
 //}

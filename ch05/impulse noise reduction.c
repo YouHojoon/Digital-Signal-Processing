@@ -58,6 +58,8 @@
 //
 //	free(image);
 //	free(output);
+
+//  return 0;
 //}
 //
 //void merge_sort(BYTE array[], int start, int end) {

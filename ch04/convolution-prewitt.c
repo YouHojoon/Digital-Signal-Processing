@@ -63,4 +63,6 @@ int main(void) {
 	free(output1);
 	free(output2);
 	free(result);
+
+	return 0;
 }
