@@ -25,7 +25,6 @@ int main(void) {
 	fread(image, sizeof(BYTE), imgSize, fp);
 	fclose(fp);
 	
-
 	for (i = 0; i < H / 3; i++) {//Blue --> Yellow
 		for (int j = 0; j < W; j++) {
 			int tmp = i * W + j;
