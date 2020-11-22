@@ -117,7 +117,7 @@ int cntPixel(BYTE *image, int Cx, int Cy,int W) {
 	return --cnt;
 }
 
-void edgeDetecting(BYTE *image, BYTE* output, int W, int H) {
+void edgeDetection(BYTE *image, BYTE* output, int W, int H) {
 
 	BYTE* tmp = (BYTE*)malloc(H * W * sizeof(BYTE));
 	thresholding(image, tmp, W * H, 50);
@@ -237,7 +237,7 @@ int main(void) {
 	fclose(fp);
 	
 	
-	edgeDetecting(image, output, W, H);
+	edgeDetection(image, output, W, H);
 
 	fp = fopen("label.bmp", "wb");
 	fwrite(&hf, sizeof(BITMAPFILEHEADER), 1, fp);
