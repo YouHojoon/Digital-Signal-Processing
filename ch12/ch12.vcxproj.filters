@@ -18,7 +18,7 @@
     <ClCompile Include="gradation.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="소스.cpp">
+    <ClCompile Include="thining.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

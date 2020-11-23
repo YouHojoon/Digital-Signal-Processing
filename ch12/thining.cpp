@@ -19,8 +19,8 @@ void zhangSuen(unsigned char* image, unsigned char* output, int rows, int cols);
 void dilation(BYTE* image, BYTE* output, int W, int H);
 void erosion(BYTE* image, BYTE* output, int W, int H);
 int cntPixel(BYTE* image, int Cx, int Cy, int W, int H);
-void chkBifurcation(BYTE* image, int W, int H);
-void inverseImage(BYTE* image,BYTE* output, int imgSize);
+void chkBifurcationAndEndPoint(BYTE* image, BYTE* output, int W, int H);
+void inverseImage(BYTE* image, BYTE* output, int imgSize);
 
 int main(void) {
 	BITMAPFILEHEADER hf;
@@ -61,13 +61,13 @@ int main(void) {
 	zhangSuen(image, output, H, W);
 
 	inverseImage(output, output, imgSize);
-	chkBifurcation(output, W, H);
+	chkBifurcationAndEndPoint(output, image, W, H);
 
 	fp = fopen("output.bmp", "wb");
 	fwrite(&hf, sizeof(BITMAPFILEHEADER), 1, fp);
 	fwrite(&hinfo, sizeof(BITMAPINFOHEADER), 1, fp);
 	fwrite(hRGB, sizeof(RGBQUAD), 256, fp);
-	fwrite(output, sizeof(BYTE), imgSize, fp);
+	fwrite(image, sizeof(BYTE), imgSize, fp);
 	fclose(fp);
 
 	free(image);
@@ -237,14 +237,54 @@ void drawBox(BYTE* image, int Cx, int Cy, int W, int H) {
 	for (int i = Cy - 1; i < Cy + 1; i++)
 		image[i * W + Cx - 1] = 178;
 }
-void chkBifurcation(BYTE* image, int W, int H) {
+void chkBifurcationAndEndPoint(BYTE* image, BYTE* output, int W, int H) {
+	for (int i = 0; i < W * H; i++)
+		output[i] = image[i];
+
 	for (int i = 1; i < H - 1; i++) {
 		for (int j = 1; j < W - 1; j++) {
 			if (image[i * W + j] == 0) {
 				if (cntPixel(image, j, i, W, H) == 1)
-					drawBox(image, j, i, W, H);
-				else if (cntPixel(image, j, i, W, H) == 8)
-					drawBox(image, j, i, W, H);
+					drawBox(output, j, i, W, H);
+				else if (cntPixel(output, j, i, W, H) == 3)
+				{
+					int cnt = 0;
+					int Cy = i - 1;
+					int Cx = j - 1;
+					int tmp = image[Cy * W + Cx];
+
+					for (int k = Cx; k <= Cx + 2 + 1; k++) {
+						if (image[Cy * W + k] == 255 && tmp == 0)
+							cnt++;
+						tmp = image[Cy * W + k];
+					}
+					Cx += 2;
+
+					for (int k = Cy; k <= Cy + 2; k++) {
+						if (image[k * W + Cx] == 255 && tmp == 0)
+							cnt++;
+						tmp = image[k * W + Cx];
+					}
+					Cy += 2;
+
+					for (int k = Cx; k >= Cx - 2; k--) {
+						if (image[Cy * W + k] == 255 && tmp == 0)
+							cnt++;
+						tmp = image[Cy * W + k];
+					}
+
+					Cx -= 2;
+
+					for (int k = Cy; k >= Cy - 2; k--) {
+						if (image[k * W + Cx] == 255 && tmp == 0)
+							cnt++;
+						tmp = image[k * W + Cx];
+					}
+
+					if (cnt == 3)
+						drawBox(output, j, i, W, H);
+				}
+
 			}
 		}
 	}
